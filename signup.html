@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <nav class="bg-gradient-to-l from-gray-900 to-black p-6 flex justify-between items-center">
+        <div class="text-white text-2xl">VoiceVigil</div>
+        <div class="flex space-x-4">
+            <a href="/" class="text-white hover:bg-blue-700 py-2 px-4 rounded transition duration-300">Home</a>
+            <a href="/about" class="text-white hover:bg-blue-700 py-2 px-4 rounded transition duration-300">About Us</a>
+            <a href="/signup" class="text-white hover:bg-blue-700 py-2 px-4 rounded transition duration-300">Signup</a>
+            <a href="/login" class="text-white hover:bg-blue-700 py-2 px-4 rounded transition duration-300">Login</a>
+        </div>
+    </nav>
+    <div class="signup-container max-w-md mx-auto mt-20 px-4">
+        <div class="bg-white p-8 rounded-lg shadow-md text-center">
+            <h2 class="text-2xl font-semibold">Sign Up</h2>
+            <form id="signupForm" class="mt-4">
+                <div class="mb-4 text-left">
+                    <label for="email" class="block">Email:</label>
+                    <input type="email" id="email" name="email" required
+                        class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-4 text-left">
+                    <label for="password" class="block">Password:</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-4 text-left">
+                    <label for="confirm-password" class="block">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required
+                        class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500">
+                </div>
+                <button type="submit" class="btn bg-blue-500 text-white py-2 px-4 rounded transition duration-300">Sign
+                    Up</button>
+            </form>
+            <p id="message" class="mt-4"></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBv5Lb14z_fWIp5jeG0_FD6fpptbLRg4IM",
+            authDomain: "deepfake-audio-detection-cecce.firebaseapp.com",
+            projectId: "deepfake-audio-detection-cecce",
+            storageBucket: "deepfake-audio-detection-cecce.appspot.com",
+            messagingSenderId: "556798602530",
+            appId: "1:556798602530:web:14f6a93fc095f8aab0097b",
+            measurementId: "G-RTC4RX82D5"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference to Firebase Auth service
+        const auth = firebase.auth();
+
+        // Function to handle sign up form submission
+        document.getElementById('signupForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Create user with email and password
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed up successfully
+                    document.getElementById('message').textContent = 'You have successfully created an account.';
+
+                    // Redirect to detection page after a delay
+                    setTimeout(function () {
+                        window.location.href = '/detection';
+                    }, 2000); // 2 seconds delay
+                })
+                .catch((error) => {
+                    // Handle errors
+                    document.getElementById('message').textContent = error.message;
+                });
+        });
+    </script>
+</body>
+
+</html>

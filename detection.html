@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Audio Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+
+    <nav class="navbar bg-gradient-to-l from-gray-900 to-black p-6 flex justify-between items-center">
+        <div class="voicevigil font-bold text-white text-2xl">VoiceVigil</div>
+        <div class="navcontent flex space-x-4">
+            <a href="/" class="text-white hover:bg-blue-700 py-2 px-4 rounded transition duration-300">Home</a>
+            <a href="/about" class="text-white hover:bg-blue-700 py-2 px-4 rounded transition duration-300">About Us</a>
+            <!-- Check if the user is logged in -->
+            <div id="userProfile" class="hidden text-white ">
+                <!-- This will be replaced with the logged-in user's email -->
+            </div>
+            <!-- If the user is not logged in, show login and sign-up buttons -->
+            <div id="authButtons" class="flex space-x-4">
+                <a href="/signup"
+                    class="text-white hover:bg-blue-700 py-2 px-4 rounded transition duration-300">Signup</a>
+                <a href="/login"
+                    class="text-white hover:bg-blue-700 py-2 px-4 rounded transition duration-300">Login</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <body>
+        <div class="center-container">
+            <div class="container mx-auto my-20 mr-50">
+                <h2 class="text-3xl font-bold mb-4">Deepfake Audio Detection</h2>
+                <div class="bg-white rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-4">Upload Audio File</h3>
+                    <!-- Changed label behavior to trigger file input -->
+                    <label for="audioFileInput" class="custom-file-upload block mb-4" onclick="audioFileInput.click()">
+                        Select Audio
+                    </label>
+                    <!-- Modified input to be visible and triggered by label click -->
+                    <input id="audioFileInput" type="file" name="file" accept="audio/*" class="hidden"
+                        onchange="handleFileSelect(event)">
+                    <!-- Element to display selected file name -->
+                    <div id="selectedFileName" class="text-sm text-gray-600 mb-4 hidden">Selected Audio: <span
+                            id="fileNameDisplay"></span></div>
+
+
+                    <!-- Changed button text to Upload Audio -->
+                    <div class="buttons-container">
+                        <button id="checkAudioBtn"
+                            class="btn bg-black hover:bg-gray-500  text-white py-2 px-4 rounded transition duration-300 mr-4">Upload
+                            Audio</button>
+                        <!-- Additional Button -->
+                        <button id="testAudioBtn"
+                            class="btn bg-gray-700 hover:bg-gray-400 text-white py-2 px-4 rounded transition duration-300">Test
+                            Audio</button>
+                    </div>
+                </div>
+                <div class="mt-10">
+                    <h3 class="text-xl font-semibold mb-2">How It Works</h3>
+                    <p class="mb-3">Upload your audio file and click "Check Audio" to analyze it for signs of deepfake
+                        manipulation.</p>
+                    <p>The detection algorithm will examine various features of the audio to determine its authenticity.
+                    </p>
+                </div>
+                <!-- Result Display Box -->
+                <div id="resultBox" class="mt-16 hidden">
+                    <h3 class="text-xl font-semibold mb-2">Result</h3>
+                    <div id="resultContent" class="bg-gray-200 p-10 rounded-lg"></div>
+                </div>
+            </div>
+        </div>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script>
+
+            // Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyBv5Lb14z_fWIp5jeG0_FD6fpptbLRg4IM",
+                authDomain: "deepfake-audio-detection-cecce.firebaseapp.com",
+                projectId: "deepfake-audio-detection-cecce",
+                storageBucket: "deepfake-audio-detection-cecce.appspot.com",
+                messagingSenderId: "556798602530",
+                appId: "1:556798602530:web:14f6a93fc095f8aab0097b",
+                measurementId: "G-RTC4RX82D5"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            // Get references to HTML elements
+            const authButtons = document.getElementById('authButtons');
+            const userProfile = document.getElementById('userProfile');
+
+            firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                    // User is logged in
+                    authButtons.style.display = 'none'; // Hide login and signup buttons
+                    userProfile.innerText = 'Logged in as: ' + user.email; // Display logged-in user's email
+                    userProfile.style.display = 'block'; // Show user profile
+                    // Show sign-out button
+                    const signOutBtn = document.createElement('button');
+                    signOutBtn.innerText = 'Sign out';
+                    signOutBtn.classList.add('text-white', 'hover:bg-blue-700', 'py-2', 'px-4', 'rounded', 'transition', 'duration-300');
+                    signOutBtn.addEventListener('click', () => {
+                        firebase.auth().signOut().then(() => {
+                            // Redirect to login page after sign-out
+                            window.location.href = '/login';
+                        }).catch(error => {
+                            console.error('Error signing out:', error);
+                        });
+                    });
+                    userProfile.appendChild(signOutBtn);
+                } else {
+                    // No user is logged in
+                    authButtons.style.display = 'block'; // Show login and signup buttons
+                    userProfile.style.display = 'none'; // Hide user profile
+                }
+            });
+            // JavaScript code here
+            const audioFileInput = document.getElementById('audioFileInput');
+            const checkAudioBtn = document.getElementById('checkAudioBtn');
+            const testAudioBtn = document.getElementById('testAudioBtn');
+            const resultBox = document.getElementById('resultBox');
+            const resultContent = document.getElementById('resultContent');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const selectedFileName = document.getElementById('selectedFileName');
+
+            // Function to handle file selection
+            function handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (!file) {
+                    alert('Please select an audio file.');
+                    return;
+                }
+                // Display selected file name
+                fileNameDisplay.textContent = file.name;
+                selectedFileName.classList.remove('hidden');
+
+            }
+
+            // Function to handle checking audio
+            checkAudioBtn.addEventListener('click', () => {
+                // Trigger file input to open when "Upload Audio" is clicked
+                audioFileInput.click();
+            });
+
+            // Function to handle testing audio
+            testAudioBtn.addEventListener('click', () => {
+                const file = audioFileInput.files[0];
+                if (!file) {
+                    alert('Please select an audio file.');
+                    return;
+                }
+
+                // Placeholder logic for testing audio
+                console.log('Testing audio...');
+
+                // Show result box (for demonstration)
+                resultBox.classList.remove('hidden');
+
+                // Create FormData object to send the file
+                const formData = new FormData();
+                formData.append('audio', file);
+
+                // Send the audio file to the backend for processing
+                fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        // Check if the response content type is JSON
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            return response.json();
+                        } else {
+                            // If the response is not JSON, handle it as text/plain or other format
+                            return response.text();
+                        }
+                    })
+                    .then(data => {
+                        // Display the result returned from the backend
+                        console.log(data);
+                        // Assuming "resultContent" is the element where you want to display the result
+                        resultContent.textContent = data.prediction || data; // Use data directly if it's not JSON
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            })
+
+        </script>
+    </body>
+
+</html>

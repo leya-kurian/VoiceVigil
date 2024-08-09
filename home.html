@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voicevigil</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color:#020e16;
+    }
+  </style>
+</head>
+<body class="h-full text-white">
+  <nav class="navbar bg-#01121e p-4 flex justify-between items-center">
+    <div class="voicevigil text-2xl font-bold">VoiceVigil</div>
+    <div class="navcontent flex space-x-4">
+      <a href="/" class="hover:bg-black  py-2 px-4 rounded transition duration-300">Home</a>
+      <a href="#" class="hover:bg-black py-2 px-4 rounded transition duration-300" onclick="window.location.href='/about'">About Us</a>
+      <a href="#" class="hover:bg-black py-2 px-4 rounded transition duration-300" onclick="window.location.href='/signup'">Signup</a>
+      <a href="#" class="hover:bg-black py-2 px-4 rounded transition duration-300" onclick="window.location.href='/login'">Login</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  
+  <div class="hero-section py-48" style="background-image: url('/static/bgimage.jpg'); background-size: cover; background-position: center ;">
+   
+    <div class="container mx-auto text-center">
+        <h1 class="text-6xl font-bold mb-6 text-white">Detect DeepFake Audios</h1>
+        <p class="text-lg mt-10 text-2xl text-white">Ensure the authenticity of your audio files with our cutting-edge detection technology.</p>
+        <button type="button" class="bg-black text-white py-3 px-6 rounded-lg text-lg hover:text-gray-300 transition duration-300 mt-10" onclick="window.location.href='/login'">
+            Detect Now
+        </button>
+    </div>
+</div>
+
+
+
+
+  <div class="text-center">
+    <div class="bg-[#0C356A] py-10">
+      <h1 class="text-3xl font-bold text-center mb-4 text-white">What VoiceVigil Offers</h1>
+      <h4 class="text-xl text-center mt-6 mb-8 text-gray-200">
+        VoiceVigil offers cutting-edge audio deepfake detection technology.
+      </h4>
+      <div class="grid grid-cols-3 gap-6 mt-10 px-3 py-10">
+        <div>
+          <h4 class="text-lg font-semibold text-white">Deep fake detection model</h4>
+          <p class="text-gray-200">
+            VoiceVigil's advanced deepfake detection model accurately distinguishes between real and fake audio recordings, ensuring authenticity and trustworthiness.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold text-white">User friendly interface</h4>
+          <p class="text-gray-200">
+            VoiceVigil boasts a user-friendly interface for effortless navigation and seamless user experience
+          </p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold text-white">Safe and Secure Services</h4>
+          <p class="text-gray-200">
+            VoiceVigil ensures safe and secure services, prioritizing user privacy and data protection.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-20">
+    <h1 class="text-3xl font-bold text-center">Frequently Asked Questions</h1>
+    <p class="text-center mt-6">Find answers to commonly asked questions about our platform and services.</p>
+    <div class="space-y-3 mt-8 w-1/2 border-2 mx-auto">
+      <div class="border-t border-b py-2 mr-1/2">
+        <h4 class="font-semibold">How does it work?</h4>
+      </div>
+      <div class="border-b py-2">
+        <h4 class="font-semibold">Is it safe?</h4>
+      </div>
+      <div class="border-b py-2">
+        <h4 class="font-semibold">How do I sign Up?</h4>
+      </div>
+      <div class="border-b py-2">
+        <h4 class="font-semibold">Can I offer my services?</h4>
+      </div>
+      <div class="border-b py-2">
+        <h4 class="font-semibold">How can I get paid?</h4>
+      </div>
+    </div>
+    <div class="text-center mt-10">
+      <button class="bg-[#0174BE] text-white font-bold py-2 px-4 rounded hover:bg-black transition-colors">Contact</button>
+    </div>
+  </div>
+
+  <footer class="bg-[#0C356A] mt-20">
+    <div class="flex justify-between items-center text-gray-200 py-4 px-8">
+      <p>© 2024 Voicevigil All rights reserved.</p>
+      <div class="flex gap-4">
+        <p>Privacy Policy</p>
+        <p>Terms of Service</p>
+        <p>Cookies Settings</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
