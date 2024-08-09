@@ -6,6 +6,7 @@ This repository contains the code for a Deepfake Audio Detection project. The pr
 - [Overview](#overview)
 - [Features](#features)
 - [Usage](#usage)
+- [Demo](#demo-video)
 - [Importance and Advantages](#importance-and-advantages)
 
 ## Overview
@@ -22,6 +23,10 @@ With the increasing use of artificial intelligence and deep learning techniques,
 
 1. Upload an audio file to check whether it is real or fake.
 2. The result will be displayed on the web page.
+
+## Demo Video
+
+To see the Deepfake Audio Detection project in action, watch the [demo video](https://github.com/leya-kurian/VoiceVigil/blob/e98c4a32af5cff9a78c5d3263fb823a91d001795/DEMO%20VIDEO.mp4).
 
 ## Importance and Advantages
 
